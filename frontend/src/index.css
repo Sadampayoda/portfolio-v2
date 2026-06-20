@@ -1,14 +1,11 @@
 @import "tailwindcss";
 
-
-
-
-
 :root {
     /* Background */
     --color-bg: #FFFFFF;
     --color-bg-secondary: #F7F8FC;
     --color-navbar: #F7F7F7;
+    --color-card: #FFFFFF;
 
     /* Text */
     --color-text: #4B5563;
@@ -23,4 +20,39 @@
     /* Border */
     --color-border-active: #374151;
     --color-border: #F7F8FC;
+}
+
+.dark {
+    /* Background */
+    --color-bg: #121316;
+    --color-bg-secondary: #1C1D22;
+    --color-navbar: #121316;
+    --color-card: #1C1D22;
+
+    /* Text */
+    --color-text: #9CA3AF;
+    --color-text-active: #F3F4F6;
+    --color-text-muted: #6B7280;
+    --color-text-button: #121316;
+
+    /* Button */
+    --color-button: #F3F4F6;
+    --color-button-hover: #E5E7EB;
+
+    /* Border */
+    --color-border-active: #F3F4F6;
+    --color-border: #1C1D22;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.7s ease, color 0.7s ease;
+}
+
+.bg-grid-pattern {
+    background-size: 20px 20px;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
