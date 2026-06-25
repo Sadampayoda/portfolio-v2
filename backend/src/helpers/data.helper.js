@@ -26,6 +26,15 @@ const dataHelper = {
         }
 
         return { error: null, snap }
+    },
+    setPaginateData: (collection, page, limit) => {
+        if (limit) {
+            collection = collection.limit(limit);
+            const offset = (page - 1) * limit;
+            collection = collection.offset(offset);
+        }
+
+        return collection;
     }
 
 }

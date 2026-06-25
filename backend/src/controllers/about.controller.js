@@ -10,7 +10,8 @@ const collectionRef = db.collection(aboutModel.table)
 const aboutController = {
     getAbout: async (req, res) => {
         try {
-            const result = await queryRepository.getAll(collectionRef)
+            const { page, limit } = req.params;
+            const result = await queryRepository.getAll(collectionRef, page, limit)
             return response.success(res, result, "get about success")
         } catch (err) {
             console.log(err)
