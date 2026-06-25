@@ -7,7 +7,7 @@ import db from "../config/firebase.js";
 
 const collectionRef = db.collection(userModel.table)
 const authController = {
-    register: async (req, res) => {
+    register: async (req, res, next) => {
         try {
             const data = req.body;
             if (!data || Object.keys(data).length === 0) {
@@ -38,10 +38,10 @@ const authController = {
             return response.success(res, null, "Created user data success")
 
         } catch (error) {
-            return response.error(res, "Create user failed", error.message)
+            next(err);
         }
     },
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         try {
             const data = req.body;
             if (!data || Object.keys(data).length === 0) {
@@ -75,7 +75,7 @@ const authController = {
                 }
             }, "Login success")
         } catch (error) {
-            return response.error(res, "Login failed", error.message)
+            next(err);
         }
     }
 }
