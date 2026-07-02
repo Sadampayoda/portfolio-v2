@@ -1,8 +1,9 @@
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
-
+import logger from '../config/logger.js';
 
 const response = {
     success: (res, data = null, message = ReasonPhrases.OK, code = StatusCodes.OK) => {
+        logger.info(message);
         return res.status(code).json({
             status: 'SUCCESS',
             code,
@@ -11,6 +12,7 @@ const response = {
         })
     },
     created: (res, data = null, message = ReasonPhrases.CREATED) => {
+        logger.info(message);
         return res.status(StatusCodes.CREATED).json({
             status: 'SUCCESS',
             code: StatusCodes.CREATED,
@@ -20,6 +22,7 @@ const response = {
     },
 
     error: (res, message = ReasonPhrases.INTERNAL_SERVER_ERROR, code = StatusCodes.INTERNAL_SERVER_ERROR, errors = null) => {
+        logger.error(message);
         return res.status(code).json({
             status: 'ERROR',
             code,
@@ -29,6 +32,7 @@ const response = {
     },
 
     notFound: (res, message = ReasonPhrases.NOT_FOUND) => {
+        logger.error(message);
         return res.status(StatusCodes.NOT_FOUND).json({
             status: 'ERROR',
             code: StatusCodes.NOT_FOUND,
@@ -38,6 +42,7 @@ const response = {
     },
 
     badRequest: (res, message = ReasonPhrases.BAD_REQUEST, errors = null) => {
+        logger.error(message);
         return res.status(StatusCodes.BAD_REQUEST).json({
             status: 'ERROR',
             code: StatusCodes.BAD_REQUEST,
@@ -47,6 +52,7 @@ const response = {
     },
 
     unauthorized: (res, message = ReasonPhrases.UNAUTHORIZED) => {
+        logger.error(message);
         return res.status(StatusCodes.UNAUTHORIZED).json({
             status: 'ERROR',
             code: StatusCodes.UNAUTHORIZED,
@@ -56,6 +62,7 @@ const response = {
     },
 
     forbidden: (res, message = ReasonPhrases.FORBIDDEN) => {
+        logger.error(message);
         return res.status(StatusCodes.FORBIDDEN).json({
             status: 'ERROR',
             code: StatusCodes.FORBIDDEN,

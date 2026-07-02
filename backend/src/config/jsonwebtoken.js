@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import config from "./app.js";
 
 dotenv.config();
 
-const jwtSecret = process.env.JWT_SECRET;
-const jwtExpiry = process.env.JWT_EXPIRES_IN;
+const jwtSecret = config.jwt.secret;
+const jwtExpiry = config.jwt.expiresIn;
 
 
 const jsonWebToken = {

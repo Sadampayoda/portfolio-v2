@@ -5,21 +5,29 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "node --watch --env-file=.env.development app.js",
+    "start": "node --env-file=.env.production app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/genai": "^2.10.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.5.2",
     "firebase-admin": "^14.0.0",
+    "helmet": "^8.2.0",
     "http-status-codes": "^2.3.0",
     "joi": "^18.2.3",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0",
+    "openai": "^6.45.0",
+    "winston": "^3.19.0",
+    "xss": "^1.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

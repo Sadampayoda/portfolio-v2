@@ -1,4 +1,5 @@
 import response from "../utils/response.js";
+import config from "../config/app.js";
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
@@ -8,7 +9,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, config.jwt.secret, (err, decoded) => {
         if (err) {
             return response.unauthorized(res, "Token is invalid")
         }
