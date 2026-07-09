@@ -3,6 +3,7 @@ import db from "../config/firebase.js";
 import projectModel from "../models/project.model.js";
 import queryRepository from "../repositories/query.repository.js";
 import dataHelper from "../helpers/data.helper.js";
+import responseHelper from "../helpers/response.helper.js";
 
 const collectionRef = db.collection(projectModel.table)
 
@@ -10,8 +11,11 @@ const collectionRef = db.collection(projectModel.table)
 const projectController = {
     getProject: async (req, res, next) => {
         try {
-            const { page, limit } = req.params;
-            const result = await queryRepository.getAll(collectionRef, page, limit)
+            const { page, limit, type } = req.query;
+            const result = await queryRepository.getAll(collectionRef, page, limit, {
+                type: type
+            })
+
             return response.success(res, result, "get project success")
         } catch (err) {
             next(err);

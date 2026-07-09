@@ -27,18 +27,18 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
             <div className="flex flex-col mt-20">
                 <div className="relative min-h-[calc(100vh-5rem)] flex items-center py-12 md:py-0 overflow-hidden">
                     {/* Light Background Layer */}
-                    <div 
+                    <div
                         className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
-                        style={{ 
+                        style={{
                             backgroundImage: `url(${background})`,
                             opacity: isDarkMode ? 0 : 1,
                             zIndex: 1
                         }}
                     />
                     {/* Dark Background Layer */}
-                    <div 
+                    <div
                         className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
-                        style={{ 
+                        style={{
                             backgroundImage: `url(${backgroundDark})`,
                             opacity: isDarkMode ? 1 : 0,
                             zIndex: 2
@@ -162,6 +162,22 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
                             duration-700
                         ">
 
+                            <div className="flex mb-4">
+                                <div className="
+                                    bg-[var(--color-bg-secondary)]
+                                    text-[var(--color-text)]
+                                    px-4 py-3
+                                    shadow-sm
+                                    rounded-2xl
+                                    max-w-[85%]
+                                    text-sm sm:text-base
+                                    transition-all
+                                    duration-700
+                                ">
+                                    Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam,
+                                    pengalaman, project, dan teknologi yang digunakan.
+                                </div>
+                            </div>
                             <div className="flex mb-4">
                                 <div className="
                                     bg-[var(--color-bg-secondary)]

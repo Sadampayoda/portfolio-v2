@@ -8,7 +8,7 @@ const response = {
             status: 'SUCCESS',
             code,
             message,
-            data
+            ...data
         })
     },
     created: (res, data = null, message = ReasonPhrases.CREATED) => {

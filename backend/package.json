@@ -26,6 +26,8 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "openai": "^6.45.0",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
     "xss": "^1.0.15"
   },

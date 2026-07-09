@@ -1,15 +1,13 @@
-import { ModelStage } from "@google/genai";
-
-const ProjectType = Object.freeze({
+const RoleType = Object.freeze({
     USER: 'user',
-    ModelStage: 'model',
+    MODEL: 'model',
 });
 
-export const ProjectTypeValues = Object.freeze(Object.values(ProjectType));
+export const RoleTypeValues = Object.freeze(Object.values(RoleType));
 
-export const ProjectTypeLabels = Object.freeze({
-    [ProjectType.HOSTING]: 'User',
-    [ProjectType.NON_HOSTING]: 'Model',
+export const RoleTypeLabels = Object.freeze({
+    [RoleType.USER]: 'User',
+    [RoleType.MODEL]: 'Model',
 });
 
-export default ProjectType;
+export default RoleType;

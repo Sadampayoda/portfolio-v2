@@ -1,113 +1,49 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import { useProjects } from "../../hooks/project/useProjects";
+import { getRandomGradient } from "../../utils/gradient";
+import ProjectType, { ProjectTypeLabels } from '@/constants/projectEnum';
 
-const PROJECTS_PER_PAGE = 3;
-
-const MOCK_PROJECTS = [
-    {
-        id: 1,
-        title: "Neural Nexus AI",
-        category: "Non-Hosting",
-        tags: ["Python", "PyTorch", "LLM"],
-        description: "An autonomous knowledge synthesis engine designed for enterprise-scale semantic mapping and conversational data extraction.",
-        link: "#",
-        gradient: "from-indigo-600 to-purple-600"
-    },
-    {
-        id: 2,
-        title: "Prism Dashboard",
-        category: "Hosting (Live)",
-        tags: ["React", "Three.js", "WebGL"],
-        description: "A next-generation spatial computing dashboard utilizing high-performance rendering for 3D visualization of infrastructure data.",
-        link: "https://prism-demo.sadampayoda.com",
-        gradient: "from-orange-500 to-rose-500"
-    },
-    {
-        id: 3,
-        title: "Aether Core Engine",
-        category: "Non-Hosting",
-        tags: ["Go", "gRPC", "Redis"],
-        description: "The backbone microservice platform for modular portfolio deployments, optimized for high throughput and extremely low latency.",
-        link: "#",
-        gradient: "from-teal-500 to-emerald-500"
-    },
-    {
-        id: 4,
-        title: "Apex Analytics Portal",
-        category: "Hosting (Live)",
-        tags: ["Next.js", "Tailwind", "PostgreSQL"],
-        description: "A secure, enterprise analytics console showing real-time system metrics with customizable visual charts and automated reporting.",
-        gradient: "from-cyan-500 to-blue-600",
-        link: "https://apex.sadampayoda.com"
-    },
-    {
-        id: 5,
-        title: "Solaris Prediction Hub",
-        category: "Hosting (Live)",
-        tags: ["FastAPI", "Svelte", "Scikit-Learn"],
-        description: "An AI-powered forecasting suite that visualizes solar activity patterns and generates automated climatology analysis reports.",
-        gradient: "from-amber-400 to-orange-600",
-        link: "https://solaris.sadampayoda.com"
-    },
-    {
-        id: 6,
-        title: "Chronos Scheduler",
-        category: "Non-Hosting",
-        tags: ["Rust", "Wasm", "Docker"],
-        description: "A sandboxed job orchestrator running high-density task loops with sub-millisecond precision across distributed clusters.",
-        gradient: "from-fuchsia-600 to-pink-600",
-        link: "#"
-    },
-    {
-        id: 7,
-        title: "ByteVault Encryption",
-        category: "Non-Hosting",
-        tags: ["C++", "WebAssembly", "Core"],
-        description: "A client-side zero-knowledge cryptography suite compiling optimized WebAssembly binaries directly into standard browsers.",
-        gradient: "from-sky-500 to-indigo-500",
-        link: "#"
-    },
-    {
-        id: 8,
-        title: "Nexus Gate Portal",
-        category: "Hosting (Live)",
-        tags: ["Vue", "Firebase", "WebSockets"],
-        description: "A collaborative live-syncing workspace platform facilitating remote agile workflow management and secure messaging.",
-        gradient: "from-violet-500 to-purple-600",
-        link: "https://nexus-portal.sadampayoda.com"
-    }
-];
+const PROJECTS_PER_PAGE = 2
 
 export default function Projects({ isDarkMode, setIsDarkMode }) {
+
     const [activeTab, setActiveTab] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
-
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-        setCurrentPage(1);
-    };
-
-    // Filter projects
-    const filteredProjects = MOCK_PROJECTS.filter((project) => {
-        if (activeTab === "All") return true;
-        return project.category === activeTab;
-    });
-
+    const searchParams = useMemo(() => ({
+        type: activeTab === "All" ? null : activeTab,
+    }), [activeTab]);
+    const {
+        projects,
+        loading,
+        error
+    } = useProjects(currentPage, PROJECTS_PER_PAGE, searchParams);
     // Pagination calculations
-    const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
-    const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
-    const currentProjects = filteredProjects.slice(startIndex, startIndex + PROJECTS_PER_PAGE);
+    const totalPages = projects?.meta?.totalPages ?? 1
+    const totalItems = projects?.meta?.totalItems ?? 0
+    const hasNextPage = projects?.meta?.hasNextPage ?? false
+    const hasPrevPage = projects?.meta?.hasPrevPage ?? false
+
+    const types = [
+        { value: "All", label: "All" },
+        ...Object.entries(ProjectTypeLabels).map(([value, label]) => ({ value, label }))
+    ];
+
+    const handleTypeChange = (type) => {
+        setActiveTab(type);
+        setCurrentPage(1);
+    }
 
     return (
         <>
             <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
             <div className="flex flex-col mt-20 min-h-[calc(100vh-5rem)]">
-                
+
                 {/* Projects Section */}
                 <div id="projects" className="bg-[var(--color-bg-secondary)] flex-1 py-20 transition-colors duration-700">
                     <div className="max-w-6xl mx-auto px-6 sm:px-12 md:px-16">
-                        
+
                         {/* Header */}
                         <div className="mb-12">
                             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--color-text-active)] mb-4">
@@ -120,10 +56,10 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
 
                         {/* Filter Tabs */}
                         <div className="flex flex-wrap gap-3 mb-10">
-                            {["All", "Hosting (Live)", "Non-Hosting"].map((tab) => (
+                            {types.map((type) => (
                                 <button
-                                    key={tab}
-                                    onClick={() => handleTabChange(tab)}
+                                    key={type.value}
+                                    onClick={() => handleTypeChange(type.value)}
                                     className={`
                                         cursor-pointer
                                         px-5 py-2
@@ -131,21 +67,21 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                         rounded-full
                                         transition-all duration-300
                                         border border-[var(--color-border-active)]
-                                        ${activeTab === tab 
-                                            ? "bg-[var(--color-button)] text-[var(--color-text-button)] border-[var(--color-button)]" 
+                                        ${activeTab === type.value
+                                            ? "bg-[var(--color-button)] text-[var(--color-text-button)] border-[var(--color-button)]"
                                             : "bg-transparent text-[var(--color-text)] hover:bg-[var(--color-border)] border-[var(--color-border-active)]"
                                         }
                                     `}
                                 >
-                                    {tab}
+                                    {type.value}
                                 </button>
                             ))}
                         </div>
 
                         {/* Grid Projects */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                            {currentProjects.map((project) => (
-                                <div 
+                            {projects.data?.map((project) => (
+                                <div
                                     key={project.id}
                                     className="
                                         flex flex-col
@@ -158,14 +94,25 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                     "
                                 >
                                     {/* CSS Gradient Placeholder Image Container */}
-                                    <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center p-6 relative overflow-hidden group`}>
-                                        {/* Abstract Grid Overlays */}
-                                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent mix-blend-overlay"></div>
-                                        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-                                        
-                                        <span className="text-white text-5xl font-black tracking-widest opacity-25 group-hover:scale-110 transition-transform duration-500 select-none">
-                                            {project.title.split(" ").map(w => w[0]).join("")}
-                                        </span>
+                                    <div className={`h-48 w-full relative overflow-hidden group ${!project.image_url ? `bg-gradient-to-br ${getRandomGradient(project.id || project.title)}` : ""}`}>
+                                        {project.image_url ? (
+                                            <img
+                                                src={project.image_url}
+                                                alt={project.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        ) : (
+                                            <>
+                                                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent mix-blend-overlay"></div>
+                                                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+
+                                                <div className="absolute inset-0 flex items-center justify-center p-6">
+                                                    <span className="text-white text-5xl font-black tracking-widest opacity-25 group-hover:scale-110 transition-transform duration-500 select-none">
+                                                        {project.title.split(" ").map(w => w[0]).join("")}
+                                                    </span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
 
                                     {/* Content Details */}
@@ -173,7 +120,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                         <div>
                                             {/* Tags */}
                                             <div className="flex flex-wrap gap-2 mb-3">
-                                                {project.tags.map((tag) => (
+                                                {project.tools.map((tag) => (
                                                     <span key={tag} className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-active)] border border-[var(--color-border)]">
                                                         {tag}
                                                     </span>
@@ -193,20 +140,26 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
 
                                         {/* Action button */}
                                         <div>
-                                            {project.category === "Hosting (Live)" ? (
-                                                <a 
-                                                    href={project.link} 
-                                                    target="_blank" 
+                                            {project.type === "hosting" ? (
+                                                <a
+                                                    href={project.hosting_url}
+                                                    target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
                                                 >
                                                     View Live Demo <span className="ml-1 text-sm">→</span>
                                                 </a>
                                             ) : (
-                                                <span className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-muted)] cursor-not-allowed">
-                                                    Local Environment <span className="ml-1 text-sm">⊘</span>
-                                                </span>
+                                                <a
+                                                    href={project.github_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
+                                                >
+                                                    View Github <span className="ml-1 text-sm">→</span>
+                                                </a>
                                             )}
+
                                         </div>
 
                                     </div>
@@ -220,11 +173,11 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                 {/* Prev */}
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                    disabled={currentPage === 1}
+                                    disabled={!hasPrevPage}
                                     className={`
                                         cursor-pointer px-4 py-2 text-xs font-bold uppercase rounded-xl border border-[var(--color-border)] transition-all duration-300
-                                        ${currentPage === 1 
-                                            ? "text-[var(--color-text-muted)] bg-transparent border-transparent cursor-not-allowed" 
+                                        ${!hasPrevPage
+                                            ? "text-[var(--color-text-muted)] bg-transparent border-transparent cursor-not-allowed"
                                             : "text-[var(--color-text-active)] hover:bg-[var(--color-bg)] border-[var(--color-border-active)]"
                                         }
                                     `}
@@ -252,11 +205,11 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                 {/* Next */}
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                    disabled={currentPage === totalPages}
+                                    disabled={!hasNextPage}
                                     className={`
                                         cursor-pointer px-4 py-2 text-xs font-bold uppercase rounded-xl border border-[var(--color-border)] transition-all duration-300
-                                        ${currentPage === totalPages 
-                                            ? "text-[var(--color-text-muted)] bg-transparent border-transparent cursor-not-allowed" 
+                                        ${!hasNextPage
+                                            ? "text-[var(--color-text-muted)] bg-transparent border-transparent cursor-not-allowed"
                                             : "text-[var(--color-text-active)] hover:bg-[var(--color-bg)] border-[var(--color-border-active)]"
                                         }
                                     `}

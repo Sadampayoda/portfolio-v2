@@ -1,7 +1,7 @@
-
+import config from "./app.js";
 
 const corsOptions = {
-    origin: process.env.CORS_ORIGINS.split(','),
+    origin: config.cors.origins,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true

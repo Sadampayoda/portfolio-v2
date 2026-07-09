@@ -12,6 +12,7 @@ const dataHelper = {
                 ...doc.data()
             })
         })
+
         return data
     },
     validateFindData: async (collection, res, id) => {
