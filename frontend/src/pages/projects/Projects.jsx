@@ -17,7 +17,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
     const {
         projects,
         loading,
-        error
+    error
     } = useProjects(currentPage, PROJECTS_PER_PAGE, searchParams);
     // Pagination calculations
     const totalPages = projects?.meta?.totalPages ?? 1

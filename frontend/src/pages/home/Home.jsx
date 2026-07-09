@@ -1,12 +1,32 @@
-import { useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import background from "@/assets/images/background.png"
 import backgroundDark from "@/assets/images/background-dark.png"
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { SendHorizontal } from "lucide-react";
+import Message from "@/components/message/Message";
+import RoleType from "@/constants/roleEnum";
+import { useMessage } from "../../hooks/message/useMessage";
+import { useGuestName } from "../../hooks/guest/useGuestName";
 
-export default function Home({ isDarkMode, setIsDarkMode }) {
+
+export default function Home(
+    {
+        isDarkMode,
+        setIsDarkMode
+    }) {
+
+    const [content, setContent] = useState("");
+    const [chats, setChats] = useState([
+        {
+            content: "",
+            role: ""
+        }
+    ]);
+    const { guestName } = useGuestName()
+    const resMessage = useMessage(guestName, content);
+
     const location = useLocation();
 
     useEffect(() => {
@@ -19,6 +39,30 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
             }
         }
     }, [location]);
+
+    const handleSendMessage = (e) => {
+        e.preventDefault();
+        const payload = {
+            content: content,
+            role: "user"
+        }
+        setChats((chats) => {
+            return [
+                ...chats,
+                payload
+            ]
+        })
+
+
+        setContent("")
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            onClickMessage(e);
+        }
+    }
+
 
     return (
         <>
@@ -110,6 +154,9 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
 
                             <input
                                 type="text"
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                onKeyDown={handleKeyDown}
                                 placeholder="Penasaran tentang Sadam? Yuk ngobrol 👋"
                                 className="
                                     h-14
@@ -123,7 +170,10 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
                                 "
                             />
 
+
                             <button
+                                onClick={handleSendMessage}
+
                                 className="
                                     flex items-center justify-center
                                     bg-[var(--color-button)]
@@ -156,45 +206,25 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
                             overflow-y-auto
                             shadow-sm
                             border border-[var(--color-border)]
-                            min-h-[300px]
+                            min-h-[900px]
                             md:h-0
                             transition-all
                             duration-700
                         ">
-
-                            <div className="flex mb-4">
-                                <div className="
-                                    bg-[var(--color-bg-secondary)]
-                                    text-[var(--color-text)]
-                                    px-4 py-3
-                                    shadow-sm
-                                    rounded-2xl
-                                    max-w-[85%]
-                                    text-sm sm:text-base
-                                    transition-all
-                                    duration-700
-                                ">
-                                    Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam,
-                                    pengalaman, project, dan teknologi yang digunakan.
-                                </div>
-                            </div>
-                            <div className="flex mb-4">
-                                <div className="
-                                    bg-[var(--color-bg-secondary)]
-                                    text-[var(--color-text)]
-                                    px-4 py-3
-                                    shadow-sm
-                                    rounded-2xl
-                                    max-w-[85%]
-                                    text-sm sm:text-base
-                                    transition-all
-                                    duration-700
-                                ">
-                                    Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam,
-                                    pengalaman, project, dan teknologi yang digunakan.
-                                </div>
-                            </div>
-
+                            <Message
+                                content="Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam,
+                                    pengalaman, project, dan teknologi yang digunakan."
+                                role="start"
+                            />
+                            {chats.map((chat, index) => {
+                                return (
+                                    <Message
+                                        key={index}
+                                        content={chat.content}
+                                        role={chat.role}
+                                    />
+                                )
+                            })}
                         </div>
 
                     </div>
