@@ -7,6 +7,9 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const isProjectsActive = location.pathname === "/projects";
+    const isMomentsActive = location.pathname === "/moments";
+    const isLetsTalkActive = location.pathname === "/" || location.hash === "#ai-chat";
 
     const handleLetsTalkClick = () => {
         setIsOpen(false);
@@ -29,33 +32,42 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center text-[var(--color-text-muted)] text-lg gap-10">
+                <div className="hidden md:flex items-center text-lg gap-10">
                     <button
                         onClick={handleLetsTalkClick}
-                        className="relative cursor-pointer hover:text-[var(--color-text-active)] transition focus:outline-none
+                        className={`relative cursor-pointer transition focus:outline-none
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
-                        after:w-0 after:h-[3px] after:bg-[var(--color-border-active)] 
-                        after:transition-all hover:after:w-full"
+                        after:h-[3px] after:bg-[var(--color-border-active)] 
+                        after:transition-all hover:after:w-full
+                        ${isLetsTalkActive 
+                            ? "text-[var(--color-text-active)] after:w-full" 
+                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Let's Talk
                     </button>
 
                     <Link
                         to="/projects"
-                        className="relative cursor-pointer hover:text-[var(--color-text-active)] transition 
+                        className={`relative cursor-pointer transition 
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
-                        after:w-0 after:h-[3px] after:bg-[var(--color-border-active)] 
-                        after:transition-all hover:after:w-full"
+                        after:h-[3px] after:bg-[var(--color-border-active)] 
+                        after:transition-all hover:after:w-full
+                        ${isProjectsActive 
+                            ? "text-[var(--color-text-active)] after:w-full" 
+                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Projects
                     </Link>
 
                     <Link
                         to="/moments"
-                        className="relative cursor-pointer hover:text-[var(--color-text-active)] transition 
+                        className={`relative cursor-pointer transition 
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
-                        after:w-0 after:h-[3px] after:bg-[var(--color-border-active)] 
-                        after:transition-all hover:after:w-full"
+                        after:h-[3px] after:bg-[var(--color-border-active)] 
+                        after:transition-all hover:after:w-full
+                        ${isMomentsActive 
+                            ? "text-[var(--color-text-active)] after:w-full" 
+                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Moments
                     </Link>
@@ -97,24 +109,27 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                     ${isOpen ? "translate-x-0" : "translate-x-full"}
                     md:hidden
                 `}>
-                    <div className="flex flex-col gap-6 text-[var(--color-text-muted)] text-xl items-start">
+                    <div className="flex flex-col gap-6 text-xl items-start">
                         <button
                             onClick={handleLetsTalkClick}
-                            className="cursor-pointer text-left hover:text-[var(--color-text-active)] transition focus:outline-none"
+                            className={`cursor-pointer text-left transition focus:outline-none
+                            ${isLetsTalkActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
                             Let's Talk
                         </button>
                         <Link
                             to="/projects"
                             onClick={() => setIsOpen(false)}
-                            className="cursor-pointer hover:text-[var(--color-text-active)] transition"
+                            className={`cursor-pointer transition
+                            ${isProjectsActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
                             Projects
                         </Link>
                         <Link
-                            to="/"
+                            to="/moments"
                             onClick={() => setIsOpen(false)}
-                            className="cursor-pointer hover:text-[var(--color-text-active)] transition"
+                            className={`cursor-pointer transition
+                            ${isMomentsActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
                             Moments
                         </Link>

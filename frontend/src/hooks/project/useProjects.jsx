@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAll } from "@/utils/api";
+import { get } from "@/utils/api";
 import endpoint from "@/api/endpoint";
 
 export function useProjects(
@@ -16,7 +16,7 @@ export function useProjects(
     useEffect(() => {
     const fetchProjects = async () => {
             try {
-                const data = await getAll(endpoint.projects, null, page, limit, search);
+                const data = await get(endpoint.projects, null, page, limit, search);
                 setProjects(data);
             } catch (error) {
                 setError(error);

@@ -3,73 +3,75 @@ import { X } from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import hero from "@/assets/hero.png";
-
-const MOCK_MOMENTS = [
-    {
-        id: 1,
-        date: "2004 — 2010",
-        title: "Elementary (SD)",
-        brief: "The inception of curiosity. Early fascinations with logic puzzles and digital interfaces began here.",
-        longDescription: "Selama masa Sekolah Dasar, Sadam mulai menunjukkan ketertarikan besar pada logika matematika, teka-teki taktis, dan permainan logika. Ini menjadi batu pijakan utama bagi perkembangan pola pikir analitis dan rasa ingin tahunya terhadap cara kerja dunia digital di masa depan.",
-        tags: ["Foundation", "Curiosity"],
-        side: "left",
-        isMajor: true
-    },
-    {
-        id: 2,
-        date: "2010 — 2013",
-        title: "Junior High (SMP)",
-        brief: "Exploration of basic web structures. First lines of HTML and CSS were written during this pivotal period.",
-        longDescription: "Di masa Sekolah Menengah Pertama, Sadam mulai mengeksplorasi dunia komputer lebih jauh. Ia menulis baris kode HTML dan CSS pertamanya untuk merancang halaman web statis sederhana. Periode penting ini menjadi gerbang perkenalan formalnya dengan dunia pemrograman.",
-        tags: ["Web Core", "Design Intro"],
-        side: "right",
-        isMajor: false
-    },
-    {
-        id: 3,
-        date: "2013 — 2016",
-        title: "Senior High (SMA)",
-        brief: "Diving into algorithmic thinking and competitive programming. Focused on Mathematics and Physics.",
-        longDescription: "Mengambil peminatan Matematika dan Ilmu Alam (MIPA) di Sekolah Menengah Atas, Sadam memperdalam pemahaman teoritisnya tentang kalkulus, fisika, dan algoritma dasar. Ketertarikannya mulai bergeser ke pemecahan masalah (problem-solving) dan pemrograman kompetitif tingkat dasar.",
-        tags: ["Algorithms", "STEM Focus"],
-        side: "left",
-        isMajor: false
-    },
-    {
-        id: 4,
-        date: "2016 — 2020",
-        title: "University",
-        brief: "B.Sc. in Computer Science. Specialized in Human-Computer Interaction and Software Systems.",
-        longDescription: "Sadam menempuh pendidikan tinggi Sarjana Komputer (S.Kom) dengan fokus pada rekayasa perangkat lunak, struktur data, arsitektur komputer, serta interaksi manusia dan komputer. Ia berhasil lulus dengan predikat memuaskan setelah menyelesaikan proyek tugas akhir berbasis sistem web modular skala besar.",
-        tags: ["B.Sc", "Research"],
-        side: "right",
-        isMajor: true
-    },
-    // PROFESSIONAL ERA DIVIDER
-    {
-        id: 5,
-        date: "2020 — 2022",
-        title: "Junior Developer",
-        brief: "Building scalable front-end solutions for high-traffic media platforms. Deep dive into React.",
-        longDescription: "Memulai karir profesional pertamanya di industri teknologi sebagai Frontend Developer Junior. Sadam memfokuskan keahliannya pada ekosistem React.js dan Tailwind CSS, membangun antarmuka web interaktif berkinerja tinggi yang diakses oleh ribuan pengguna aktif setiap harinya.",
-        tags: ["React", "Tailwind", "TypeScript"],
-        side: "left",
-        isMajor: false
-    },
-    {
-        id: 6,
-        date: "2022 — PRESENT",
-        title: "AI & Full-Stack Engineer",
-        brief: "Developing custom LLM integrations and neural architecture for predictive analytics.",
-        longDescription: "Saat ini, Sadam bekerja sebagai insinyur perangkat lunak full-stack dengan spesialisasi pada integrasi kecerdasan buatan (AI). Ia merancang microservices backend yang kokoh, mengembangkan API cepat, serta mengintegrasikan model bahasa besar (LLMs) untuk kebutuhan analisis data bisnis prediktif.",
-        tags: ["Python", "AI Integration", "Full-Stack"],
-        side: "right",
-        isMajor: true
-    }
-];
+import { useMoments } from "../../hooks/moment/useMoments";
 
 export default function Moments({ isDarkMode, setIsDarkMode }) {
     const [selectedMoment, setSelectedMoment] = useState(null);
+    const { moments, loading } = useMoments();
+
+    if (loading) {
+        return (
+            <>
+                <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+                
+                <div className="flex flex-col mt-20 min-h-[calc(100vh-5rem)] bg-[var(--color-bg)] transition-colors duration-700">
+                    
+                    {/* Timeline Header Section */}
+                    <div className="py-16 px-6 sm:px-12 md:px-20 max-w-4xl mx-auto text-center">
+                        <span className="text-xs tracking-widest text-[var(--color-text-muted)] font-semibold uppercase block mb-3 animate-pulse">
+                            THE TIMELINE
+                        </span>
+                        <div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded mx-auto mb-6 animate-pulse"></div>
+                        <div className="h-6 w-96 bg-gray-200 dark:bg-gray-800 rounded mx-auto animate-pulse"></div>
+                    </div>
+
+                    {/* Hero Portrait Banner */}
+                    <div className="px-6 max-w-4xl mx-auto w-full mb-16 animate-pulse">
+                        <div className="rounded-3xl bg-gray-200 dark:bg-gray-800 aspect-[21/9] md:aspect-[3/1]"></div>
+                    </div>
+
+                    {/* Timeline Section */}
+                    <div className="relative max-w-5xl mx-auto w-full px-6 py-12 mb-24">
+                        
+                        {/* Vertical Center Line */}
+                        <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-gray-200 dark:bg-gray-800 opacity-20" />
+
+                        <div className="flex flex-col gap-16 relative z-10">
+                            {Array.from({ length: 3 }).map((_, idx) => (
+                                <div key={idx} className="flex flex-col md:flex-row relative items-start md:items-center">
+                                    
+                                    {/* Marker */}
+                                    <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4.5 h-4.5 rounded-full bg-gray-300 dark:bg-gray-700 border-4 border-[var(--color-bg)] z-20 animate-pulse" />
+
+                                    {/* Content Card */}
+                                    <div className={`
+                                        w-full md:w-1/2 pl-12 md:pl-0 
+                                        ${idx % 2 === 0 ? "md:pr-12 md:text-right" : "md:order-2 md:pl-12 md:text-left"}
+                                    `}>
+                                        <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6 shadow-sm animate-pulse">
+                                            <div className="h-4 w-24 bg-gray-200 dark:bg-gray-800 rounded mb-2"></div>
+                                            <div className="h-6 w-48 bg-gray-200 dark:bg-gray-800 rounded mb-3"></div>
+                                            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded mb-4"></div>
+                                            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-5/6 mb-4"></div>
+                                            <div className="flex gap-2">
+                                                <div className="h-5 w-12 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                                                <div className="h-5 w-16 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Blank side spacer */}
+                                    <div className="hidden md:block w-1/2" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <Footer />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
@@ -114,16 +116,23 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                     <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-[var(--color-border-active)] opacity-20 z-0" />
 
                     <div className="flex flex-col gap-16 relative z-10">
-                        {MOCK_MOMENTS.map((moment, index) => {
-                            // Insert a visual section header before the 5th item (Professional Era)
-                            const isProfessionalEraStart = moment.id === 5;
+                        {moments.data?.map((moment, index) => {
+                            const prevMoment = index > 0 ? moments.data[index - 1] : null;
+                            const showGroupHeader = moment.group && moment.group !== prevMoment?.group;
+                            const side = index % 2 === 0 ? "left" : "right";
+                            const dateStr = moment.start_year && moment.end_year 
+                                ? `${moment.start_year} — ${moment.end_year}` 
+                                : moment.start_year 
+                                    ? `${moment.start_year} — PRESENT` 
+                                    : "";
+                            const isMajor = !!moment.image_url;
 
                             return (
                                 <div key={moment.id} className="flex flex-col gap-16">
-                                    {isProfessionalEraStart && (
+                                    {showGroupHeader && (
                                         <div className="flex justify-start md:justify-center items-center my-6 ml-10 md:ml-0">
                                             <span className="bg-[var(--color-button)] text-[var(--color-text-button)] px-5 py-2 rounded-full text-xs font-semibold tracking-widest uppercase border border-[var(--color-border-active)] shadow-sm">
-                                                Professional Era
+                                                {moment.group}
                                             </span>
                                         </div>
                                     )}
@@ -132,7 +141,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                     <div className="flex flex-col md:flex-row relative items-start md:items-center">
                                         
                                         {/* Alternating Node marker shapes (Major vs Intermediate) */}
-                                        {moment.isMajor ? (
+                                        {isMajor ? (
                                             <div 
                                                 onClick={() => setSelectedMoment(moment)}
                                                 className="
@@ -166,7 +175,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                         {/* Spacer and Alternating Alignment Containers */}
                                         <div className={`
                                             w-full md:w-1/2 pl-12 md:pl-0 
-                                            ${moment.side === "left" ? "md:pr-12 md:text-right" : "md:order-2 md:pl-12 md:text-left"}
+                                            ${side === "left" ? "md:pr-12 md:text-right" : "md:order-2 md:pl-12 md:text-left"}
                                         `}>
                                             <div 
                                                 onClick={() => setSelectedMoment(moment)}
@@ -183,7 +192,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                             >
                                                 {/* Date Label */}
                                                 <span className="text-xs tracking-wider text-[var(--color-text-muted)] font-semibold block mb-2">
-                                                    {moment.date}
+                                                    {dateStr}
                                                 </span>
 
                                                 {/* Milestone Title */}
@@ -191,14 +200,14 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                                     {moment.title}
                                                 </h3>
 
-                                                {/* Brief desc */}
-                                                <p className="text-sm text-[var(--color-text)] leading-relaxed mb-4">
-                                                    {moment.brief}
+                                                {/* Description */}
+                                                <p className="text-sm text-[var(--color-text)] leading-relaxed mb-4 line-clamp-3">
+                                                    {moment.description}
                                                 </p>
 
                                                 {/* Tags */}
-                                                <div className={`flex flex-wrap gap-2 ${moment.side === "left" ? "md:justify-end" : "md:justify-start"}`}>
-                                                    {moment.tags.map((tag) => (
+                                                <div className={`flex flex-wrap gap-2 ${side === "left" ? "md:justify-end" : "md:justify-start"}`}>
+                                                    {(moment.subtitle || []).map((tag) => (
                                                         <span key={tag} className="px-2.5 py-0.5 rounded-md text-[10px] font-bold tracking-wider uppercase bg-[var(--color-bg-secondary)] text-[var(--color-text-active)] border border-[var(--color-border)]">
                                                             {tag}
                                                         </span>
@@ -237,7 +246,11 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             
                             {/* Date */}
                             <span className="text-xs tracking-wider text-[var(--color-text-muted)] font-semibold uppercase block mb-2">
-                                {selectedMoment.date}
+                                {selectedMoment.start_year && selectedMoment.end_year 
+                                    ? `${selectedMoment.start_year} — ${selectedMoment.end_year}` 
+                                    : selectedMoment.start_year 
+                                        ? `${selectedMoment.start_year} — PRESENT` 
+                                        : ""}
                             </span>
                             
                             {/* Title */}
@@ -247,7 +260,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
 
                             {/* Tags */}
                             <div className="flex flex-wrap gap-2 mb-6">
-                                {selectedMoment.tags.map((tag) => (
+                                {(selectedMoment.subtitle || []).map((tag) => (
                                     <span key={tag} className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-active)] border border-[var(--color-border)]">
                                         {tag}
                                     </span>
@@ -256,7 +269,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
 
                             {/* Long Detailed Description */}
                             <p className="text-base text-[var(--color-text)] leading-relaxed mb-8">
-                                {selectedMoment.longDescription}
+                                {selectedMoment.description}
                             </p>
                             
                             {/* Close Button */}

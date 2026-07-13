@@ -1,10 +1,10 @@
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import background from "@/assets/images/background.png"
 import backgroundDark from "@/assets/images/background-dark.png"
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, Trash2 } from "lucide-react";
 import Message from "@/components/message/Message";
 import RoleType from "@/constants/roleEnum";
 import { useMessage } from "../../hooks/message/useMessage";
@@ -25,7 +25,36 @@ export default function Home(
         }
     ]);
     const { guestName } = useGuestName()
-    const resMessage = useMessage(guestName, content);
+    const { sendMessage, data, clearConversation, loading } = useMessage(guestName)
+    const [isError, setIsError] = useState(false);
+
+    const handleClearConversation = (e) => {
+        e.preventDefault();
+        if (window.confirm("Apakah Anda yakin ingin menghapus semua riwayat percakapan?")) {
+            clearConversation();
+        }
+    }
+
+    const chatContainerRef = useRef(null);
+
+    // Scroll to bottom of chat when chats change
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTo({
+                top: chatContainerRef.current.scrollHeight,
+                behavior: "smooth"
+            });
+        }
+    }, [chats]);
+
+    useEffect(() => {
+        const messagesHistory = data?.data?.message || [];
+        const payload = messagesHistory.map((item) => ({
+            content: item.content,
+            role: item.role
+        }));
+        setChats(payload);
+    }, [data]);
 
     const location = useLocation();
 
@@ -40,26 +69,32 @@ export default function Home(
         }
     }, [location]);
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
-        const payload = {
-            content: content,
-            role: "user"
+        if (!content.trim()) return;
+
+        const originalContent = content;
+        setIsError(false);
+        setContent("");
+
+        // Optimistically add user chat bubble
+        setChats((chat) => [...chat, {
+            role: RoleType.USER,
+            content: originalContent
+        }]);
+
+        const success = await sendMessage(guestName, originalContent);
+        if (!success) {
+            setIsError(true);
+            setContent(originalContent);
+            // Remove the optimistic user chat bubble that failed
+            setChats((chat) => chat.filter((c, idx) => !(idx === chat.length - 1 && c.content === originalContent)));
         }
-        setChats((chats) => {
-            return [
-                ...chats,
-                payload
-            ]
-        })
-
-
-        setContent("")
     }
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            onClickMessage(e);
+            handleSendMessage(e);
         }
     }
 
@@ -137,25 +172,30 @@ export default function Home(
                     {/* Input */}
                     <div className="flex justify-center px-4 w-full">
 
-                        <div className="
+                        <div className={`
                             flex items-center
                             rounded-2xl
                             px-3
                             shadow-lg
-                            border border-[var(--color-border)]
+                            border
+                            ${isError 
+                                ? 'border-red-500 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500' 
+                                : 'border-[var(--color-border)] focus-within:border-[var(--color-text-active)]'}
                             bg-[var(--color-card)]
-                            focus-within:border-[var(--color-text-active)]
                             focus-within:shadow-xl
                             transition-all
                             duration-700
                             w-full
                             max-w-[700px]
-                        ">
+                        `}>
 
                             <input
                                 type="text"
                                 value={content}
-                                onChange={(e) => setContent(e.target.value)}
+                                onChange={(e) => {
+                                    setContent(e.target.value);
+                                    if (isError) setIsError(false);
+                                }}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Penasaran tentang Sadam? Yuk ngobrol 👋"
                                 className="
@@ -190,6 +230,25 @@ export default function Home(
                                 <SendHorizontal size={18} />
                             </button>
 
+                            <button
+                                onClick={handleClearConversation}
+                                className="
+                                    flex items-center justify-center
+                                    bg-red-50 hover:bg-red-100 text-red-500
+                                    dark:bg-red-950/30 dark:hover:bg-red-950/50 dark:text-red-400
+                                    cursor-pointer
+                                    rounded-xl
+                                    w-11 h-11
+                                    ml-2
+                                    hover:scale-105
+                                    transition-all
+                                    duration-700
+                                "
+                                title="Hapus Percakapan"
+                            >
+                                <Trash2 size={18} />
+                            </button>
+
                         </div>
 
                     </div>
@@ -197,34 +256,47 @@ export default function Home(
                     {/* Chat Box History */}
                     <div className="flex justify-center mt-6 md:mt-8 flex-1 overflow-hidden px-4">
 
-                        <div className="
-                            w-full
-                            max-w-[750px]
-                            rounded-3xl
-                            bg-[var(--color-card)]
-                            p-4 sm:p-6
-                            overflow-y-auto
-                            shadow-sm
-                            border border-[var(--color-border)]
-                            min-h-[900px]
-                            md:h-0
-                            transition-all
-                            duration-700
-                        ">
+                        <div
+                            ref={chatContainerRef}
+                            className="
+                                w-full
+                                max-w-[750px]
+                                rounded-3xl
+                                bg-[var(--color-card)]
+                                p-4 sm:p-6
+                                overflow-y-auto
+                                custom-scrollbar
+                                shadow-sm
+                                border border-[var(--color-border)]
+                                min-h-[700px]
+                                md:h-0
+                                transition-all
+                                duration-700
+                            "
+                        >
                             <Message
-                                content="Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam,
-                                    pengalaman, project, dan teknologi yang digunakan."
+                                content="Halo 👋 Saya AI yang siap membantu menjelaskan tentang Sadam, pengalaman, project, dan teknologi yang digunakan."
                                 role="start"
                             />
                             {chats.map((chat, index) => {
+                                if (!chat.content) return null;
                                 return (
                                     <Message
                                         key={index}
                                         content={chat.content}
-                                        role={chat.role}
+                                        role={chat.role == RoleType.USER ? 'end' : 'start'}
                                     />
                                 )
                             })}
+                            {loading && (
+                                <Message
+                                    content=""
+                                    role="start"
+                                    isLoading={true}
+                                />
+                            )}
+                            {/* Spacer to give breathing room at the bottom of the chat list */}
+                            <div className="h-40 w-full" />
                         </div>
 
                     </div>

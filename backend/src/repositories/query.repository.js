@@ -3,7 +3,7 @@ import responseHelper from "../helpers/response.helper.js";
 
 const queryRepository = {
     getAll: async (collection, page, limit, search = {}, sortBy = 'asc') => {
-        let query = collection.where('deleted_at', '==', null).orderBy('created_at', sortBy);
+        let query = collection.where('deleted_at', '==', null);
 
         Object.entries(search).forEach(([field, value]) => {
             if (
@@ -17,29 +17,27 @@ const queryRepository = {
             }
         });
 
-        let countQuery = collection.where('deleted_at', '==', null);
-        Object.entries(search).forEach(([field, value]) => {
-            if (
-                value !== undefined &&
-                value !== null &&
-                value !== '' &&
-                value !== 'null' &&
-                value !== 'undefined'
-            ) {
-                countQuery = countQuery.where(field, '==', value);
-            }
+        const snap = await query.get();
+        let data = dataHelper.convertFirestoreSnapshot(snap);
+
+        // Sort in JavaScript memory to avoid composite index requirement in Firestore
+        data.sort((a, b) => {
+            const dateA = a.created_at ? new Date(a.created_at._seconds ? a.created_at._seconds * 1000 : a.created_at) : 0;
+            const dateB = b.created_at ? new Date(b.created_at._seconds ? b.created_at._seconds * 1000 : b.created_at) : 0;
+            return sortBy === 'asc' ? dateA - dateB : dateB - dateA;
         });
-        const countSnap = await countQuery.count().get();
-        const totalItems = countSnap.data().count;
+
+        const totalItems = data.length;
 
         if (page && limit) {
-            query = dataHelper.setPaginateData(query, parseInt(page), parseInt(limit));
+            const startIndex = (parseInt(page) - 1) * parseInt(limit);
+            const endIndex = startIndex + parseInt(limit);
+            data = data.slice(startIndex, endIndex);
         }
 
-        const snap = await query.get()
         return {
             meta: responseHelper.setMeta(totalItems, Number(page), Number(limit)),
-            data: dataHelper.convertFirestoreSnapshot(snap)
+            data: data
         }
     },
     getById: async (collection, id) => {
@@ -55,11 +53,20 @@ const queryRepository = {
         };
     },
     getByField: async (collection, field, value, sortBy = 'asc') => {
-        const snap = await collection.where(field, '==', value).where('deleted_at', '==', null).orderBy('created_at', sortBy).get()
+        const snap = await collection.where(field, '==', value).where('deleted_at', '==', null).get()
         if (snap.empty) {
             return null
         }
-        return dataHelper.convertFirestoreSnapshot(snap)
+        const data = dataHelper.convertFirestoreSnapshot(snap);
+        
+        // Sort in memory to avoid composite index requirement
+        data.sort((a, b) => {
+            const dateA = a.created_at ? new Date(a.created_at._seconds ? a.created_at._seconds * 1000 : a.created_at) : 0;
+            const dateB = b.created_at ? new Date(b.created_at._seconds ? b.created_at._seconds * 1000 : b.created_at) : 0;
+            return sortBy === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+        
+        return data;
     },
     getByFieldFirst: async (collection, field, value) => {
         const snap = await collection.where(field, '==', value).where('deleted_at', '==', null).get()

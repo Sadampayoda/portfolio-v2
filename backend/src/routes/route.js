@@ -172,6 +172,8 @@ router.delete('/projects/:id', AuthMiddleware, ProjectController.deleteProject);
 
 router.post('/openai/response', openaiController.createResponse);
 router.post('/geminiai/response', geminiAiController.createResponse);
+router.get('/geminiai/message', geminiAiController.getMessage);
+router.delete('/geminiai/message', geminiAiController.deleteMessage);
 
 router.get('/chats/:id', chatController.getById);
 

@@ -1,6 +1,10 @@
 export const endpoint = {
     projects: '/projects',
-    geminiAi: '/geminiai/response',
+    moments: '/moments',
+    geminiAi: {
+        get: '/geminiai/message',
+        post: '/geminiai/response',
+    }
 }
 
 export default endpoint

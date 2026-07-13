@@ -80,91 +80,125 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
 
                         {/* Grid Projects */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                            {projects.data?.map((project) => (
-                                <div
-                                    key={project.id}
-                                    className="
-                                        flex flex-col
-                                        rounded-2xl
-                                        overflow-hidden
-                                        bg-[var(--color-card)]
-                                        border border-[var(--color-border)]
-                                        shadow-sm hover:shadow-xl hover:-translate-y-1
-                                        transition-all duration-300
-                                    "
-                                >
-                                    {/* CSS Gradient Placeholder Image Container */}
-                                    <div className={`h-48 w-full relative overflow-hidden group ${!project.image_url ? `bg-gradient-to-br ${getRandomGradient(project.id || project.title)}` : ""}`}>
-                                        {project.image_url ? (
-                                            <img
-                                                src={project.image_url}
-                                                alt={project.title}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                        ) : (
-                                            <>
-                                                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent mix-blend-overlay"></div>
-                                                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-
-                                                <div className="absolute inset-0 flex items-center justify-center p-6">
-                                                    <span className="text-white text-5xl font-black tracking-widest opacity-25 group-hover:scale-110 transition-transform duration-500 select-none">
-                                                        {project.title.split(" ").map(w => w[0]).join("")}
-                                                    </span>
+                            {loading ? (
+                                Array.from({ length: 3 }).map((_, idx) => (
+                                    <div
+                                        key={`skeleton-${idx}`}
+                                        className="
+                                            flex flex-col
+                                            rounded-2xl
+                                            overflow-hidden
+                                            bg-[var(--color-card)]
+                                            border border-[var(--color-border)]
+                                            shadow-sm
+                                            animate-pulse
+                                        "
+                                    >
+                                        <div className="h-48 w-full bg-gray-200 dark:bg-gray-800"></div>
+                                        <div className="p-6 flex-1 flex flex-col justify-between">
+                                            <div>
+                                                <div className="flex flex-wrap gap-2 mb-3">
+                                                    <div className="h-5 w-12 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                                                    <div className="h-5 w-16 bg-gray-200 dark:bg-gray-800 rounded"></div>
                                                 </div>
-                                            </>
-                                        )}
+                                                <div className="h-6 w-3/4 bg-gray-200 dark:bg-gray-800 rounded mb-4"></div>
+                                                <div className="space-y-2 mb-6">
+                                                    <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                                                    <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-5/6"></div>
+                                                    <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-2/3"></div>
+                                                </div>
+                                            </div>
+                                            <div className="h-4 w-24 bg-gray-200 dark:bg-gray-800 rounded"></div>
+                                        </div>
                                     </div>
+                                ))
+                            ) : (
+                                projects.data?.map((project) => (
+                                    <div
+                                        key={project.id}
+                                        className="
+                                            flex flex-col
+                                            rounded-2xl
+                                            overflow-hidden
+                                            bg-[var(--color-card)]
+                                            border border-[var(--color-border)]
+                                            shadow-sm hover:shadow-xl hover:-translate-y-1
+                                            transition-all duration-300
+                                        "
+                                    >
+                                        {/* CSS Gradient Placeholder Image Container */}
+                                        <div className={`h-48 w-full relative overflow-hidden group ${!project.image_url ? `bg-gradient-to-br ${getRandomGradient(project.id || project.title)}` : ""}`}>
+                                            {project.image_url ? (
+                                                <img
+                                                    src={project.image_url}
+                                                    alt={project.title}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                            ) : (
+                                                <>
+                                                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent mix-blend-overlay"></div>
+                                                    <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
-                                    {/* Content Details */}
-                                    <div className="p-6 flex-1 flex flex-col justify-between">
-                                        <div>
-                                            {/* Tags */}
-                                            <div className="flex flex-wrap gap-2 mb-3">
-                                                {project.tools.map((tag) => (
-                                                    <span key={tag} className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-active)] border border-[var(--color-border)]">
-                                                        {tag}
-                                                    </span>
-                                                ))}
+                                                    <div className="absolute inset-0 flex items-center justify-center p-6">
+                                                        <span className="text-white text-5xl font-black tracking-widest opacity-25 group-hover:scale-110 transition-transform duration-500 select-none">
+                                                            {project.title.split(" ").map(w => w[0]).join("")}
+                                                        </span>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+
+                                        {/* Content Details */}
+                                        <div className="p-6 flex-1 flex flex-col justify-between">
+                                            <div>
+                                                {/* Tags */}
+                                                <div className="flex flex-wrap gap-2 mb-3">
+                                                    {project.tools.map((tag) => (
+                                                        <span key={tag} className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-active)] border border-[var(--color-border)]">
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+
+                                                {/* Title */}
+                                                <h2 className="text-xl font-bold text-[var(--color-text-active)] mb-2">
+                                                    {project.title}
+                                                </h2>
+
+                                                {/* Description */}
+                                                <p className="text-sm text-[var(--color-text)] mb-6 leading-relaxed line-clamp-3">
+                                                    {project.description}
+                                                </p>
                                             </div>
 
-                                            {/* Title */}
-                                            <h2 className="text-xl font-bold text-[var(--color-text-active)] mb-2">
-                                                {project.title}
-                                            </h2>
+                                            {/* Action button */}
+                                            <div>
+                                                {project.type === "hosting" ? (
+                                                    <a
+                                                        href={project.hosting_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
+                                                    >
+                                                        View Live Demo <span className="ml-1 text-sm">→</span>
+                                                    </a>
+                                                ) : (
+                                                    <a
+                                                        href={project.github_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
+                                                    >
+                                                        View Github <span className="ml-1 text-sm">→</span>
+                                                    </a>
+                                                )}
 
-                                            {/* Description */}
-                                            <p className="text-sm text-[var(--color-text)] mb-6 leading-relaxed line-clamp-3">
-                                                {project.description}
-                                            </p>
-                                        </div>
-
-                                        {/* Action button */}
-                                        <div>
-                                            {project.type === "hosting" ? (
-                                                <a
-                                                    href={project.hosting_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
-                                                >
-                                                    View Live Demo <span className="ml-1 text-sm">→</span>
-                                                </a>
-                                            ) : (
-                                                <a
-                                                    href={project.github_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
-                                                >
-                                                    View Github <span className="ml-1 text-sm">→</span>
-                                                </a>
-                                            )}
+                                            </div>
 
                                         </div>
-
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
 
                         {/* Pagination */}
