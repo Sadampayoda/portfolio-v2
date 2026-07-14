@@ -60,7 +60,7 @@ export async function create(endpoint, data, baseURL = null, headers = {}) {
         throw new Error(`HTTP error! status: ${res.status}`);
     }
     const response = await res.json()
-    
+
     return response
 }
 
