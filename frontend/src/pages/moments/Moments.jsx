@@ -19,7 +19,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                     {/* Timeline Header Section */}
                     <div className="py-16 px-6 sm:px-12 md:px-20 max-w-4xl mx-auto text-center">
                         <span className="text-xs tracking-widest text-[var(--color-text-muted)] font-semibold uppercase block mb-3 animate-pulse">
-                            THE TIMELINE
+                            LINIMASA
                         </span>
                         <div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded mx-auto mb-6 animate-pulse"></div>
                         <div className="h-6 w-96 bg-gray-200 dark:bg-gray-800 rounded mx-auto animate-pulse"></div>
@@ -82,16 +82,16 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                 {/* Timeline Header Section */}
                 <div className="py-16 px-6 sm:px-12 md:px-20 max-w-4xl mx-auto text-center">
                     <span className="text-xs tracking-widest text-[var(--color-text-muted)] font-semibold uppercase block mb-3">
-                        THE TIMELINE
+                        LINIMASA
                     </span>
                     <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--color-text-active)] mb-6">
-                        The Path of Evolution
+                        Perjalanan Karir & Hidup
                     </h1>
                     <p className="text-base sm:text-lg text-[var(--color-text)] leading-relaxed max-w-2xl mx-auto mb-4">
-                        Tracing the trajectory of a creative mind from the foundational years of discovery to the complex landscapes of artificial intelligence and full-stack engineering.
+                        Menelusuri perjalanan pemikiran kreatif dari tahun-tahun awal penemuan hingga dunia kecerdasan buatan dan rekayasa full-stack yang kompleks.
                     </p>
                     <span className="text-xs tracking-wider text-[var(--color-text-muted)] font-bold">
-                        EST. 2004 — PRESENT
+                        MULAI 2004 — SEKARANG
                     </span>
                 </div>
 
@@ -123,7 +123,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             const currentYear = new Date().getFullYear();
                             const isEndYearPresent = !moment.end_year || Number(moment.end_year) === currentYear;
                             const dateStr = moment.start_year 
-                                ? `${moment.start_year} — ${isEndYearPresent ? "PRESENT" : moment.end_year}` 
+                                ? `${moment.start_year} — ${isEndYearPresent ? "SEKARANG" : moment.end_year}` 
                                 : "";
                             const isMajor = !!moment.image_url;
 
@@ -239,7 +239,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             <button 
                                 onClick={() => setSelectedMoment(null)}
                                 className="absolute top-6 right-6 cursor-pointer text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] transition focus:outline-none"
-                                aria-label="Close dialog"
+                                aria-label="Tutup dialog"
                             >
                                 <X size={24} />
                             </button>
@@ -250,7 +250,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                     const currentYear = new Date().getFullYear();
                                     const isEndYearPresent = !selectedMoment.end_year || Number(selectedMoment.end_year) === currentYear;
                                     return selectedMoment.start_year 
-                                        ? `${selectedMoment.start_year} — ${isEndYearPresent ? "PRESENT" : selectedMoment.end_year}` 
+                                        ? `${selectedMoment.start_year} — ${isEndYearPresent ? "SEKARANG" : selectedMoment.end_year}` 
                                         : "";
                                 })()}
                             </span>
@@ -282,7 +282,7 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                                     onClick={() => setSelectedMoment(null)}
                                     className="cursor-pointer bg-[var(--color-button)] text-[var(--color-text-button)] px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-[var(--color-button-hover)] transition-all duration-300"
                                 >
-                                    Close
+                                    Tutup
                                 </button>
                             </div>
                         </div>

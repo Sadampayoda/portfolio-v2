@@ -54,7 +54,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                                 ? "text-[var(--color-text-active)] after:w-full"
                                 : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
-                        Let's Talk
+                        Mari Bicara
                     </button>
 
                     <Link
@@ -67,7 +67,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                                 ? "text-[var(--color-text-active)] after:w-full"
                                 : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
-                        Projects
+                        Proyek
                     </Link>
 
                     <Link
@@ -80,7 +80,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                                 ? "text-[var(--color-text-active)] after:w-full"
                                 : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
-                        Moments
+                        Momen
                     </Link>
                 </div>
 
@@ -93,7 +93,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                     >
                         {isDarkMode ? <Sun size={25} /> : <Moon size={25} />}
                     </button>
-                    <Button link={"https://www.linkedin.com/in/sadampayodasabilillah"}>Connect</Button>
+                    <Button link={"https://www.linkedin.com/in/sadampayodasabilillah"}>Hubungkan</Button>
                 </div>
 
                 {/* Mobile Menu Toggle & Theme */}
@@ -126,7 +126,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                             className={`cursor-pointer text-left transition focus:outline-none
                             ${isLetsTalkActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
-                            Let's Talk
+                            Mari Bicara
                         </button>
                         <Link
                             to="/projects"
@@ -134,7 +134,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                             className={`cursor-pointer transition
                             ${isProjectsActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
-                            Projects
+                            Proyek
                         </Link>
                         <Link
                             to="/moments"
@@ -142,12 +142,12 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                             className={`cursor-pointer transition
                             ${isMomentsActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
-                            Moments
+                            Momen
                         </Link>
                     </div>
                     <div className="w-full h-[1px] bg-[var(--color-border-active)] opacity-10"></div>
                     <div onClick={() => setIsOpen(false)} className="w-full">
-                        <Button link={"https://www.linkedin.com/in/sadampayodasabilillah"}>Connect</Button>
+                        <Button link={"https://www.linkedin.com/in/sadampayodasabilillah"}>Hubungkan</Button>
                     </div>
                 </div>
 

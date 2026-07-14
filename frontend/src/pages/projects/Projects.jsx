@@ -26,7 +26,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
     const hasPrevPage = projects?.meta?.hasPrevPage ?? false
 
     const types = [
-        { value: "All", label: "All" },
+        { value: "All", label: "Semua" },
         ...Object.entries(ProjectTypeLabels).map(([value, label]) => ({ value, label }))
     ];
 
@@ -47,10 +47,10 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                         {/* Header */}
                         <div className="mb-12">
                             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--color-text-active)] mb-4">
-                                Curated Works
+                                Project Pilihan
                             </h1>
                             <p className="text-base sm:text-lg text-[var(--color-text)] max-w-2xl leading-relaxed">
-                                Engineering sophisticated digital experiences at the intersection of human-centric design, robust backend systems, and modern web architectures.
+                                Merancang pengalaman digital berkualitas tinggi yang memadukan desain berorientasi pengguna, sistem backend yang kokoh, dan arsitektur web modern.
                             </p>
                         </div>
 
@@ -73,7 +73,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                         }
                                     `}
                                 >
-                                    {type.value}
+                                    {type.label}
                                 </button>
                             ))}
                         </div>
@@ -180,7 +180,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
                                                     >
-                                                        View Live Demo <span className="ml-1 text-sm">→</span>
+                                                        Lihat Demo Langsung <span className="ml-1 text-sm">→</span>
                                                     </a>
                                                 ) : (
                                                     <a
@@ -189,7 +189,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-[var(--color-text-active)] hover:text-gray-400 transition"
                                                     >
-                                                        View Github <span className="ml-1 text-sm">→</span>
+                                                        Lihat GitHub <span className="ml-1 text-sm">→</span>
                                                     </a>
                                                 )}
 
@@ -216,7 +216,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                         }
                                     `}
                                 >
-                                    Prev
+                                    Sebelumnya
                                 </button>
 
                                 {/* Page Numbers */}
@@ -248,7 +248,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
                                         }
                                     `}
                                 >
-                                    Next
+                                    Selanjutnya
                                 </button>
                             </div>
                         )}

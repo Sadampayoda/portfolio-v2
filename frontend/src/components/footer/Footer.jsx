@@ -14,7 +14,7 @@ export default function Footer() {
 
                     {/* Right */}
                     <div className="text-center md:text-right text-[var(--color-text-muted)] text-sm tracking-wide">
-                        © 2026 Sadam. Crafted with passion & code 🚀
+                        © 2026 Sadam. Dibuat dengan sepenuh hati & kode 🚀
                     </div>
 
                 </div>

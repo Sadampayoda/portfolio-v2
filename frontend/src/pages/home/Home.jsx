@@ -191,28 +191,28 @@ export default function Home(
 
                         {/* Label */}
                         <div className="text-xs sm:text-sm tracking-widest text-[var(--color-text-muted)] mb-4 border px-3 py-1 inline-block rounded-full">
-                            WEB DEVELOPER
+                            PENGEMBANG WEB
                         </div>
 
                         {/* Heading */}
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[var(--color-text-active)]">
-                            Building Scalable <br className="hidden sm:inline" />
+                            Membangun Sistem <br className="hidden sm:inline" />
                             <span className="text-gray-400">
-                                Web Systems &
+                                Web Skalabel &
                             </span><br className="hidden sm:inline" />
-                            Digital Experiences.
+                            Pengalaman Digital.
                         </h1>
 
                         {/* Description */}
                         <p className="mt-6 text-[var(--color-text)] max-w-xs sm:max-w-sm md:max-w-md text-sm sm:text-base leading-relaxed">
-                            Focused on clean architecture, performance, and maintainable code.
-                            Turning complex ideas into fast, reliable, and user-friendly web applications.
+                            Fokus pada arsitektur bersih, performa, dan kode yang mudah dipelihara.
+                            Mengubah ide-ide kompleks menjadi aplikasi web yang cepat, andal, dan ramah pengguna.
                         </p>
 
                         {/* Scroll */}
                         <div className="mt-8 sm:mt-10 flex items-center gap-4 text-xs tracking-widest text-[var(--color-text-muted)]">
                             <div className="w-10 h-[1px] bg-[var(--color-text-muted)]"></div>
-                            SCROLL TO EXPLORE
+                            GULIR UNTUK MENJELAJAHI
                         </div>
 
                     </div>
