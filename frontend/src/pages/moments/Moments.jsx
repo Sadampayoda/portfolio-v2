@@ -120,11 +120,11 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             const prevMoment = index > 0 ? moments.data[index - 1] : null;
                             const showGroupHeader = moment.group && moment.group !== prevMoment?.group;
                             const side = index % 2 === 0 ? "left" : "right";
-                            const dateStr = moment.start_year && moment.end_year 
-                                ? `${moment.start_year} — ${moment.end_year}` 
-                                : moment.start_year 
-                                    ? `${moment.start_year} — PRESENT` 
-                                    : "";
+                            const currentYear = new Date().getFullYear();
+                            const isEndYearPresent = !moment.end_year || Number(moment.end_year) === currentYear;
+                            const dateStr = moment.start_year 
+                                ? `${moment.start_year} — ${isEndYearPresent ? "PRESENT" : moment.end_year}` 
+                                : "";
                             const isMajor = !!moment.image_url;
 
                             return (
@@ -246,11 +246,13 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             
                             {/* Date */}
                             <span className="text-xs tracking-wider text-[var(--color-text-muted)] font-semibold uppercase block mb-2">
-                                {selectedMoment.start_year && selectedMoment.end_year 
-                                    ? `${selectedMoment.start_year} — ${selectedMoment.end_year}` 
-                                    : selectedMoment.start_year 
-                                        ? `${selectedMoment.start_year} — PRESENT` 
-                                        : ""}
+                                {(() => {
+                                    const currentYear = new Date().getFullYear();
+                                    const isEndYearPresent = !selectedMoment.end_year || Number(selectedMoment.end_year) === currentYear;
+                                    return selectedMoment.start_year 
+                                        ? `${selectedMoment.start_year} — ${isEndYearPresent ? "PRESENT" : selectedMoment.end_year}` 
+                                        : "";
+                                })()}
                             </span>
                             
                             {/* Title */}
