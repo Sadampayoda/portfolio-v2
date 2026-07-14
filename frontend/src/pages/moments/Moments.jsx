@@ -268,9 +268,11 @@ export default function Moments({ isDarkMode, setIsDarkMode }) {
                             </div>
 
                             {/* Long Detailed Description */}
-                            <p className="text-base text-[var(--color-text)] leading-relaxed mb-8">
-                                {selectedMoment.description}
-                            </p>
+                            <div className="max-h-[240px] sm:max-h-[320px] overflow-y-auto custom-scrollbar pr-2 mb-8">
+                                <p className="text-base text-[var(--color-text)] leading-relaxed whitespace-pre-line">
+                                    {selectedMoment.description}
+                                </p>
+                            </div>
                             
                             {/* Close Button */}
                             <div className="flex justify-end">
