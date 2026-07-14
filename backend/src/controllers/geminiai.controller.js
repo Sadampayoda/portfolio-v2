@@ -22,7 +22,7 @@ const geminiAiController = {
                 return response.notFound(res, "Chat not found");
             }
 
-                        const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
+            const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
             chat.message = Array.isArray(messages)
                 ? messages.map(item => {
                     return {
@@ -51,7 +51,7 @@ const geminiAiController = {
 
             }
 
-                        const history = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
+            const history = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
 
             await queryRepository.store(messageCollection, {
                 chat_id: chat.id,
@@ -101,14 +101,14 @@ const geminiAiController = {
 
             // Get all messages under this chat
             const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id);
-            
+
             // Delete messages from collection
             if (Array.isArray(messages)) {
                 for (const msg of messages) {
                     await queryRepository.destroy(messageCollection, msg.id);
                 }
             }
-            
+
             // Delete the chat document
             await queryRepository.destroy(chatCollection, chat.id);
 
