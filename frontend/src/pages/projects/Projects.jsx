@@ -5,7 +5,7 @@ import { useProjects } from "../../hooks/project/useProjects";
 import { getRandomGradient } from "../../utils/gradient";
 import ProjectType, { ProjectTypeLabels } from '@/constants/projectEnum';
 
-const PROJECTS_PER_PAGE = 2
+const PROJECTS_PER_PAGE = 3
 
 export default function Projects({ isDarkMode, setIsDarkMode }) {
 
@@ -17,7 +17,7 @@ export default function Projects({ isDarkMode, setIsDarkMode }) {
     const {
         projects,
         loading,
-    error
+        error
     } = useProjects(currentPage, PROJECTS_PER_PAGE, searchParams);
     // Pagination calculations
     const totalPages = projects?.meta?.totalPages ?? 1
