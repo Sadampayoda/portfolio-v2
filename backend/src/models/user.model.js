@@ -6,6 +6,7 @@ const userModel = {
         name: Joi.string().min(3).max(50).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(6).max(50).required(),
+        api_key: Joi.string().optional(),
         created_at: Joi.date().optional(),
         updated_at: Joi.date().optional(),
         deleted_at: Joi.date().optional(),

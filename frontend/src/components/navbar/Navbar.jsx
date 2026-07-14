@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import Button from "@/components/button/Button.jsx"
 
 export default function Navbar({ isDarkMode, setIsDarkMode }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [domain, setDomain] = useState("sadamdahhh.com");
+
+    useEffect(() => {
+        const hostname = window.location.hostname;
+        const isLocal = hostname === "localhost" || 
+                        hostname === "127.0.0.1" || 
+                        hostname.startsWith("192.168.") || 
+                        hostname.startsWith("10.") || 
+                        hostname.endsWith(".local");
+        setDomain(isLocal ? "sadamdahhh.com" : (hostname || "sadamdahhh.com"));
+    }, []);
     const navigate = useNavigate();
     const location = useLocation();
     const isProjectsActive = location.pathname === "/projects";
@@ -28,7 +39,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
             <nav className="fixed top-0 left-0 w-full h-20 bg-[var(--color-navbar)] shadow-lg px-6 md:px-12 lg:px-24 flex items-center justify-between z-50 transition-colors duration-700">
                 {/* Logo */}
                 <Link to="/" onClick={() => setIsOpen(false)} className="uppercase text-xl font-semibold tracking-wide text-[var(--color-text-active)] z-50 select-none">
-                    Sadamdahh.com
+                    {domain}
                 </Link>
 
                 {/* Desktop Menu */}

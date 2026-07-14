@@ -40,7 +40,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/abouts', AboutController.getAbout);
+router.get('/abouts', AuthMiddleware, AboutController.getAbout);
 
 
 /**
@@ -64,7 +64,7 @@ router.get('/abouts', AboutController.getAbout);
  *       500:
  *         description: Internal server error
  */
-router.get('/abouts/:id', AboutController.getById);
+router.get('/abouts/:id', AuthMiddleware, AboutController.getById);
 
 
 /**
@@ -158,14 +158,14 @@ router.patch('/abouts/:id', AuthMiddleware, AboutController.updateAbout);
 router.delete('/abouts/:id', AuthMiddleware, AboutController.deleteAbout);
 
 
-router.get('/moments', MomentController.getMoment);
-router.get('/moments/:id', MomentController.getById);
+router.get('/moments', AuthMiddleware, MomentController.getMoment);
+router.get('/moments/:id', AuthMiddleware, MomentController.getById);
 router.post('/moments', AuthMiddleware, MomentController.createMoment);
 router.patch('/moments/:id', AuthMiddleware, MomentController.updateMoment);
 router.delete('/moments/:id', AuthMiddleware, MomentController.deleteMoment);
 
-router.get('/projects', ProjectController.getProject);
-router.get('/projects/:id', ProjectController.getById);
+router.get('/projects', AuthMiddleware, ProjectController.getProject);
+router.get('/projects/:id', AuthMiddleware, ProjectController.getById);
 router.post('/projects', AuthMiddleware, ProjectController.createProject);
 router.patch('/projects/:id', AuthMiddleware, ProjectController.updateProject);
 router.delete('/projects/:id', AuthMiddleware, ProjectController.deleteProject);
@@ -175,11 +175,11 @@ router.post('/geminiai/response', geminiAiController.createResponse);
 router.get('/geminiai/message', geminiAiController.getMessage);
 router.delete('/geminiai/message', geminiAiController.deleteMessage);
 
-router.get('/chats/:id', chatController.getById);
+router.get('/chats/:id', AuthMiddleware, chatController.getById);
 
 
-router.get('/messages', messageController.getMessage);
-router.get('/messages/:id', messageController.getById);
+router.get('/messages', AuthMiddleware, messageController.getMessage);
+router.get('/messages/:id', AuthMiddleware, messageController.getById);
 
 
 router.post('/auth/register', AuthController.register);
