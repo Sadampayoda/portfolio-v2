@@ -39,9 +39,9 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
                         after:h-[3px] after:bg-[var(--color-border-active)] 
                         after:transition-all hover:after:w-full
-                        ${isLetsTalkActive 
-                            ? "text-[var(--color-text-active)] after:w-full" 
-                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
+                        ${isLetsTalkActive
+                                ? "text-[var(--color-text-active)] after:w-full"
+                                : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Let's Talk
                     </button>
@@ -52,9 +52,9 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
                         after:h-[3px] after:bg-[var(--color-border-active)] 
                         after:transition-all hover:after:w-full
-                        ${isProjectsActive 
-                            ? "text-[var(--color-text-active)] after:w-full" 
-                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
+                        ${isProjectsActive
+                                ? "text-[var(--color-text-active)] after:w-full"
+                                : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Projects
                     </Link>
@@ -65,9 +65,9 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                         after:content-[''] after:absolute after:left-0 after:-bottom-1 
                         after:h-[3px] after:bg-[var(--color-border-active)] 
                         after:transition-all hover:after:w-full
-                        ${isMomentsActive 
-                            ? "text-[var(--color-text-active)] after:w-full" 
-                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
+                        ${isMomentsActive
+                                ? "text-[var(--color-text-active)] after:w-full"
+                                : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
                     >
                         Moments
                     </Link>

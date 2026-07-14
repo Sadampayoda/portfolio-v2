@@ -80,3 +80,16 @@ body {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in srgb, var(--color-text-muted) 25%, transparent) transparent;
 }
+
+@keyframes chat-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.animate-chat-bounce {
+    animation: chat-bounce 0.8s infinite ease-in-out;
+}

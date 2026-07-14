@@ -22,9 +22,22 @@ const queryRepository = {
 
         // Sort in JavaScript memory to avoid composite index requirement in Firestore
         data.sort((a, b) => {
-            const dateA = a.created_at ? new Date(a.created_at._seconds ? a.created_at._seconds * 1000 : a.created_at) : 0;
-            const dateB = b.created_at ? new Date(b.created_at._seconds ? b.created_at._seconds * 1000 : b.created_at) : 0;
-            return sortBy === 'asc' ? dateA - dateB : dateB - dateA;
+            const getMs = (date) => {
+                if (!date) return 0;
+                if (typeof date.toDate === 'function') {
+                    return date.toDate().getTime();
+                }
+                if (date._seconds !== undefined) {
+                    return date._seconds * 1000 + Math.floor((date._nanoseconds || 0) / 1000000);
+                }
+                if (date.seconds !== undefined) {
+                    return date.seconds * 1000 + Math.floor((date.nanoseconds || 0) / 1000000);
+                }
+                return new Date(date).getTime();
+            };
+            const timeA = getMs(a.created_at);
+            const timeB = getMs(b.created_at);
+            return sortBy === 'asc' ? timeA - timeB : timeB - timeA;
         });
 
         const totalItems = data.length;
@@ -61,9 +74,22 @@ const queryRepository = {
         
         // Sort in memory to avoid composite index requirement
         data.sort((a, b) => {
-            const dateA = a.created_at ? new Date(a.created_at._seconds ? a.created_at._seconds * 1000 : a.created_at) : 0;
-            const dateB = b.created_at ? new Date(b.created_at._seconds ? b.created_at._seconds * 1000 : b.created_at) : 0;
-            return sortBy === 'asc' ? dateA - dateB : dateB - dateA;
+            const getMs = (date) => {
+                if (!date) return 0;
+                if (typeof date.toDate === 'function') {
+                    return date.toDate().getTime();
+                }
+                if (date._seconds !== undefined) {
+                    return date._seconds * 1000 + Math.floor((date._nanoseconds || 0) / 1000000);
+                }
+                if (date.seconds !== undefined) {
+                    return date.seconds * 1000 + Math.floor((date.nanoseconds || 0) / 1000000);
+                }
+                return new Date(date).getTime();
+            };
+            const timeA = getMs(a.created_at);
+            const timeB = getMs(b.created_at);
+            return sortBy === 'asc' ? timeA - timeB : timeB - timeA;
         });
         
         return data;

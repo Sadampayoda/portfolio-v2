@@ -6,12 +6,13 @@ export function useMessage(name) {
 
     const [data, setData] = useState({ data: [] });
     const [loading, setLoading] = useState(true);
+    const [isSending, setIsSending] = useState(false);
     const [error, setError] = useState(null);
 
 
     const sendMessage = async (name, content) => {
         try {
-            setLoading(true);
+            setIsSending(true);
             setError(null);
             await create(endpoint.geminiAi.post , {
                 name: name,
@@ -24,7 +25,7 @@ export function useMessage(name) {
             setError(error);
             return false;
         } finally {
-            setLoading(false);
+            setIsSending(false);
         }
     };
     
@@ -60,5 +61,5 @@ export function useMessage(name) {
     }, [name]);
 
 
-    return { sendMessage, data, clearConversation, loading, error };
+    return { sendMessage, data, clearConversation, loading, isSending, error };
 }

@@ -22,12 +22,14 @@ const geminiAiController = {
                 return response.notFound(res, "Chat not found");
             }
 
-            const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
+                        const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
             chat.message = Array.isArray(messages)
                 ? messages.map(item => {
                     return {
+                        id: item.id,
                         role: item.role,
-                        content: item.content
+                        content: item.content,
+                        created_at: item.created_at
                     }
                 })
                 : [];
@@ -49,7 +51,13 @@ const geminiAiController = {
 
             }
 
-            const history = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
+                        const history = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
+
+            await queryRepository.store(messageCollection, {
+                chat_id: chat.id,
+                role: RoleType.USER,
+                content: content
+            })
 
             const result = await geminiAiService.response(content, history);
             if (!result) {
@@ -58,23 +66,18 @@ const geminiAiController = {
 
             await queryRepository.store(messageCollection, {
                 chat_id: chat.id,
-                role: RoleType.USER,
-                content: content
-            })
-            await queryRepository.store(messageCollection, {
-                chat_id: chat.id,
                 role: RoleType.MODEL,
                 content: result
             })
-
-
 
             const messages = await queryRepository.getByField(messageCollection, 'chat_id', chat.id)
             chat.message = Array.isArray(messages)
                 ? messages.map(item => {
                     return {
+                        id: item.id,
                         role: item.role,
-                        parts: [{ text: item.content }]
+                        content: item.content,
+                        created_at: item.created_at
                     }
                 })
                 : [];

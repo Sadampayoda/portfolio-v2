@@ -25,11 +25,16 @@ export default function Home(
         }
     ]);
     const { guestName } = useGuestName()
-    const { sendMessage, data, clearConversation, loading } = useMessage(guestName)
+    const { sendMessage, data, clearConversation, loading, isSending } = useMessage(guestName)
     const [isError, setIsError] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
+    const shouldAnimateRef = useRef(false);
+
+    const isInteractionDisabled = loading || isSending || isTyping;
 
     const handleClearConversation = (e) => {
         e.preventDefault();
+        if (isInteractionDisabled) return;
         if (window.confirm("Apakah Anda yakin ingin menghapus semua riwayat percakapan?")) {
             clearConversation();
         }
@@ -53,7 +58,59 @@ export default function Home(
             content: item.content,
             role: item.role
         }));
-        setChats(payload);
+
+        if (shouldAnimateRef.current && payload.length > 0) {
+            shouldAnimateRef.current = false;
+            const lastMessage = payload[payload.length - 1];
+
+            if (lastMessage.role !== RoleType.USER) {
+                const targetText = lastMessage.content;
+                setIsTyping(true);
+
+                // Set chats with the last message content as empty to start typing animation
+                setChats((prev) => {
+                    const nextChats = [...payload];
+                    nextChats[nextChats.length - 1] = {
+                        ...lastMessage,
+                        content: ""
+                    };
+                    return nextChats;
+                });
+
+                let currentText = "";
+                let index = 0;
+                const speed = 15; // ms per character
+
+                const interval = setInterval(() => {
+                    if (index < targetText.length) {
+                        currentText += targetText.charAt(index);
+                        index++;
+                        setChats((prev) => {
+                            const nextChats = [...prev];
+                            if (nextChats.length > 0) {
+                                nextChats[nextChats.length - 1] = {
+                                    ...nextChats[nextChats.length - 1],
+                                    content: currentText
+                                };
+                            }
+                            return nextChats;
+                        });
+                    } else {
+                        clearInterval(interval);
+                        setIsTyping(false);
+                    }
+                }, speed);
+
+                return () => {
+                    clearInterval(interval);
+                    setIsTyping(false);
+                };
+            } else {
+                setChats(payload);
+            }
+        } else {
+            setChats(payload);
+        }
     }, [data]);
 
     const location = useLocation();
@@ -71,11 +128,12 @@ export default function Home(
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
-        if (!content.trim()) return;
+        if (!content.trim() || isInteractionDisabled) return;
 
         const originalContent = content;
         setIsError(false);
         setContent("");
+        shouldAnimateRef.current = true;
 
         // Optimistically add user chat bubble
         setChats((chat) => [...chat, {
@@ -87,6 +145,7 @@ export default function Home(
         if (!success) {
             setIsError(true);
             setContent(originalContent);
+            shouldAnimateRef.current = false;
             // Remove the optimistic user chat bubble that failed
             setChats((chat) => chat.filter((c, idx) => !(idx === chat.length - 1 && c.content === originalContent)));
         }
@@ -197,7 +256,14 @@ export default function Home(
                                     if (isError) setIsError(false);
                                 }}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Penasaran tentang Sadam? Yuk ngobrol 👋"
+                                disabled={isInteractionDisabled}
+                                placeholder={
+                                    isSending 
+                                        ? "AI sedang mencari jawaban..." 
+                                        : isTyping 
+                                            ? "AI sedang mengetik..." 
+                                            : "Penasaran tentang Sadam? Yuk ngobrol 👋"
+                                }
                                 className="
                                     h-14
                                     flex-1
@@ -207,13 +273,15 @@ export default function Home(
                                     text-[var(--color-text)]
                                     placeholder:text-[var(--color-text-muted)]
                                     text-sm sm:text-base
+                                    disabled:opacity-50
+                                    disabled:cursor-not-allowed
                                 "
                             />
 
 
                             <button
                                 onClick={handleSendMessage}
-
+                                disabled={isInteractionDisabled || !content.trim()}
                                 className="
                                     flex items-center justify-center
                                     bg-[var(--color-button)]
@@ -225,6 +293,9 @@ export default function Home(
                                     hover:scale-105
                                     transition-all
                                     duration-700
+                                    disabled:opacity-50
+                                    disabled:cursor-not-allowed
+                                    disabled:hover:scale-100
                                 "
                             >
                                 <SendHorizontal size={18} />
@@ -232,6 +303,7 @@ export default function Home(
 
                             <button
                                 onClick={handleClearConversation}
+                                disabled={isInteractionDisabled}
                                 className="
                                     flex items-center justify-center
                                     bg-red-50 hover:bg-red-100 text-red-500
@@ -243,6 +315,9 @@ export default function Home(
                                     hover:scale-105
                                     transition-all
                                     duration-700
+                                    disabled:opacity-50
+                                    disabled:cursor-not-allowed
+                                    disabled:hover:scale-100
                                 "
                                 title="Hapus Percakapan"
                             >
@@ -288,7 +363,7 @@ export default function Home(
                                     />
                                 )
                             })}
-                            {loading && (
+                            {isSending && (
                                 <Message
                                     content=""
                                     role="start"

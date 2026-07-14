@@ -100,7 +100,8 @@ function renderFormattedContent(text) {
 
 export default function Message({
     content,
-    role = 'end'
+    role = 'end',
+    isLoading = false
 }) {
     return (
         <div className={`flex mb-4 ${role === 'start' ? 'justify-start' : 'justify-end'}`}>
@@ -115,7 +116,15 @@ export default function Message({
                 transition-all
                 duration-700
             ">
-                {renderFormattedContent(content)}
+                {isLoading ? (
+                    <div className="flex items-center gap-1 py-1 px-1.5">
+                        <span className="w-2 h-2 bg-[var(--color-text-muted)] rounded-full animate-chat-bounce [animation-delay:-0.32s]"></span>
+                        <span className="w-2 h-2 bg-[var(--color-text-muted)] rounded-full animate-chat-bounce [animation-delay:-0.16s]"></span>
+                        <span className="w-2 h-2 bg-[var(--color-text-muted)] rounded-full animate-chat-bounce"></span>
+                    </div>
+                ) : (
+                    renderFormattedContent(content)
+                )}
             </div>
         </div>
     );

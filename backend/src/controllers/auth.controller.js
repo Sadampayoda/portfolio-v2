@@ -15,12 +15,12 @@ const authController = {
             }
 
             const existingUser = await queryRepository.getByField(collectionRef, 'email', data.email);
-            if (existingUser) {
+            if (existingUser[0]) {
                 return response.badRequest(res, 'Email already registered');
             }
 
             const existingName = await queryRepository.getByField(collectionRef, 'name', data.name);
-            if (existingName) {
+            if (existingName[0]) {
                 return response.badRequest(res, 'Name already registered');
             }
 
@@ -37,7 +37,7 @@ const authController = {
 
             return response.success(res, null, "Created user data success")
 
-        } catch (error) {
+        } catch (err) {
             next(err);
         }
     },
@@ -54,27 +54,28 @@ const authController = {
             }
 
             const getUser = await queryRepository.getByField(collectionRef, 'email', data.email)
-            if (!getUser) {
+            const existingUser = getUser[0] || {};
+            if (!existingUser || Object.keys(existingUser).length === 0) {
                 return response.notFound(res, 'User not found')
             }
 
-            const isPasswordValid = await bcrypt.compare(data.password, getUser.password);
+            const isPasswordValid = await bcrypt.compare(data.password, existingUser.password);
             if (!isPasswordValid) {
                 return response.badRequest(res, 'Invalid password')
             }
 
             const token = jsonWebToken.generateToken({
-                name: getUser.name,
-                email: getUser.email,
+                name: existingUser.name,
+                email: existingUser.email,
             });
             return response.success(res, {
                 token: token,
                 user: {
-                    name: getUser.name,
-                    email: getUser.email,
+                    name: existingUser.name,
+                    email: existingUser.email,
                 }
             }, "Login success")
-        } catch (error) {
+        } catch (err) {
             next(err);
         }
     }
