@@ -32,11 +32,9 @@ const authController = {
 
             const hashedPassword = await bcrypt.hash(data.password, 10);
 
-            const apiKey = crypto.randomBytes(32).toString('hex');
             await queryRepository.store(collectionRef, {
                 ...data,
                 password: hashedPassword,
-                api_key: apiKey
             })
 
             return response.success(res, null, "Created user data success")
@@ -73,19 +71,11 @@ const authController = {
                 email: existingUser.email,
             });
 
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
-                maxAge: 24 * 60 * 60 * 1000,
-            });
-
             return response.success(res, {
                 token: token,
                 user: {
                     name: existingUser.name,
                     email: existingUser.email,
-                    api_key: existingUser.api_key,
                 }
             }, "Login success")
         } catch (err) {

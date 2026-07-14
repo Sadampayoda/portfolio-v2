@@ -3,7 +3,7 @@ import config from "./app.js";
 const corsOptions = {
     origin: config.cors.origins,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization','x-api-key'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }
 
