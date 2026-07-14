@@ -166,7 +166,7 @@ export default function Home(
                 <div className="relative min-h-[calc(100vh-5rem)] flex items-center py-12 md:py-0 overflow-hidden">
                     {/* Light Background Layer */}
                     <div
-                        className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+                        className="absolute inset-0 bg-cover bg-[position:75%_center] transition-opacity duration-700 ease-in-out"
                         style={{
                             backgroundImage: `url(${background})`,
                             opacity: isDarkMode ? 0 : 1,
@@ -175,7 +175,7 @@ export default function Home(
                     />
                     {/* Dark Background Layer */}
                     <div
-                        className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
+                        className="absolute inset-0 bg-cover bg-[position:75%_center] transition-opacity duration-700 ease-in-out"
                         style={{
                             backgroundImage: `url(${backgroundDark})`,
                             opacity: isDarkMode ? 1 : 0,
