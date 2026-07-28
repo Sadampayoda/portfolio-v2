@@ -377,6 +377,16 @@ export default function Home(
                     </div>
 
                 </div>
+                <iframe
+                    
+                    src={"https://talent.xenopati.my.id/form-builder/template-testing"}
+                    title="Iframe Embed Form Preview"
+                    width="100%"
+                    height="750"
+                    onLoad={() => setIsLoading(false)}
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                    className="w-full rounded-2xl border border-gray-200 dark:border-gray-800 min-h-[750px] bg-white dark:bg-gray-950 transition-all shadow-inner"
+                />
 
                 <Footer />
 
