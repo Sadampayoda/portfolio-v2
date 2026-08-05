@@ -9,17 +9,18 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
 
     useEffect(() => {
         const hostname = window.location.hostname;
-        const isLocal = hostname === "localhost" || 
-                        hostname === "127.0.0.1" || 
-                        hostname.startsWith("192.168.") || 
-                        hostname.startsWith("10.") || 
-                        hostname.endsWith(".local");
+        const isLocal = hostname === "localhost" ||
+            hostname === "127.0.0.1" ||
+            hostname.startsWith("192.168.") ||
+            hostname.startsWith("10.") ||
+            hostname.endsWith(".local");
         setDomain(isLocal ? "sadamdahhh.com" : (hostname || "sadamdahhh.com"));
     }, []);
     const navigate = useNavigate();
     const location = useLocation();
     const isProjectsActive = location.pathname === "/projects";
     const isMomentsActive = location.pathname === "/moments";
+    const isKarirActive = location.pathname === "/karir";
     const isLetsTalkActive = location.pathname === "/" || location.hash === "#ai-chat";
 
     const handleLetsTalkClick = () => {
@@ -82,6 +83,18 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                     >
                         Momen
                     </Link>
+                    <Link
+                        to="/karir"
+                        className={`relative cursor-pointer transition 
+                        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+                        after:h-[3px] after:bg-[var(--color-border-active)] 
+                        after:transition-all hover:after:w-full
+                        ${isKarirActive
+                                ? "text-[var(--color-text-active)] after:w-full"
+                                : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)] after:w-0"}`}
+                    >
+                        Karir
+                    </Link>
                 </div>
 
                 {/* Desktop Actions */}
@@ -143,6 +156,14 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                             ${isMomentsActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
                         >
                             Momen
+                        </Link>
+                        <Link
+                            to="/karir"
+                            onClick={() => setIsOpen(false)}
+                            className={`cursor-pointer transition
+                            ${isKarirActive ? "text-[var(--color-text-active)] font-semibold" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-active)]"}`}
+                        >
+                            Karir
                         </Link>
                     </div>
                     <div className="w-full h-[1px] bg-[var(--color-border-active)] opacity-10"></div>

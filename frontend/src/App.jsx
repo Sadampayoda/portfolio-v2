@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/home/Home";
 import Projects from "@/pages/projects/Projects";
 import Moments from "@/pages/moments/Moments";
+import JobPortal from "./pages/job/JobPortal";
 
 export default function App() {
     const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -43,6 +44,7 @@ export default function App() {
                 <Route path="/" element={<Home isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
                 <Route path="/projects" element={<Projects isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
                 <Route path="/moments" element={<Moments isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
+                <Route path="/karir" element={<JobPortal isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
             </Routes>
         </BrowserRouter>
     )

@@ -237,8 +237,8 @@ export default function Home(
                             px-3
                             shadow-lg
                             border
-                            ${isError 
-                                ? 'border-red-500 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500' 
+                            ${isError
+                                ? 'border-red-500 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500'
                                 : 'border-[var(--color-border)] focus-within:border-[var(--color-text-active)]'}
                             bg-[var(--color-card)]
                             focus-within:shadow-xl
@@ -258,10 +258,10 @@ export default function Home(
                                 onKeyDown={handleKeyDown}
                                 disabled={isInteractionDisabled}
                                 placeholder={
-                                    isSending 
-                                        ? "AI sedang mencari jawaban..." 
-                                        : isTyping 
-                                            ? "AI sedang mengetik..." 
+                                    isSending
+                                        ? "AI sedang mencari jawaban..."
+                                        : isTyping
+                                            ? "AI sedang mengetik..."
                                             : "Penasaran tentang Sadam? Yuk ngobrol 👋"
                                 }
                                 className="
@@ -377,16 +377,6 @@ export default function Home(
                     </div>
 
                 </div>
-                <iframe
-                    
-                    src={"https://talent.xenopati.my.id/form-builder/template-testing"}
-                    title="Iframe Embed Form Preview"
-                    width="100%"
-                    height="750"
-                    onLoad={() => setIsLoading(false)}
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                    className="w-full rounded-2xl border border-gray-200 dark:border-gray-800 min-h-[750px] bg-white dark:bg-gray-950 transition-all shadow-inner"
-                />
 
                 <Footer />
 
